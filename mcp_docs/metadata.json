@@ -1,0 +1,18 @@
+{
+  "total_pages": 12,
+  "urls": [
+    "https://modelcontextprotocol.io/docs/concepts/sampling/",
+    "https://modelcontextprotocol.io/docs/concepts/resources/tools/",
+    "https://modelcontextprotocol.io/docs/concepts/transports/",
+    "https://modelcontextprotocol.io/docs/tools/inspector/",
+    "https://modelcontextprotocol.io/docs/concepts/roots/",
+    "https://modelcontextprotocol.io/docs/concepts/prompts/",
+    "https://modelcontextprotocol.io/docs/tools/debugging/",
+    "https://modelcontextprotocol.io/docs/concepts/resources/",
+    "https://modelcontextprotocol.io/docs/concepts/architecture/",
+    "https://modelcontextprotocol.io/docs/concepts/tools/",
+    "https://modelcontextprotocol.io/docs/",
+    "https://modelcontextprotocol.io/docs"
+  ],
+  "base_url": "https://modelcontextprotocol.io/docs"
+}
