@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-langchain = "*"
 pinecone = "*"
 langchain-pinecone = "*"
 langchain-openai = "*"
@@ -17,6 +16,9 @@ selenium = "*"
 webdriver-manager = "*"
 bs4 = "*"
 requests = "*"
+html2text = "*"
+langchain-community = "*"
+langchain = "*"
 
 [dev-packages]
 
