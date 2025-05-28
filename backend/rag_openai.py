@@ -37,5 +37,5 @@ def run_llm(query:str):
     return rag_result
 
 if __name__ == "__main__":
-    result = run_llm(query = "what are the most important facts to know about MCP during a tech interview?")
+    result = run_llm(query = "what is core architecture of MCP? Explain in easy to understandable ways to a non tech audience")
     print(result["answer"])
