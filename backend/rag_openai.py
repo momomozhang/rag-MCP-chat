@@ -1,10 +1,13 @@
 import os
+from typing import Any, Dict, List
+
 from dotenv import load_dotenv
-from langchain.chains.retrieval import create_retrieval_chain
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_pinecone import PineconeVectorStore
-from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain import hub
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.chains.history_aware_retriever import create_history_aware_retriever
+from langchain.chains.retrieval import create_retrieval_chain
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_pinecone import PineconeVectorStore
 
 
 load_dotenv()
@@ -13,7 +16,7 @@ openai_api_key = os.environ.get("OPENAI_API_KEY")
 pinecone_index_name = os.environ.get("PINECONE_INDEX_NAME")
 pinecone_api_key = os.environ.get("PINECONE_API_KEY")
 
-def run_llm(query:str):
+def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
     docsearch = PineconeVectorStore(
         index_name=pinecone_index_name,
@@ -28,14 +31,22 @@ def run_llm(query:str):
         prompt = retrieval_qa_chat_prompt,
         )
     
-    rag_chain = create_retrieval_chain(
+    rephrase_prompt = hub.pull("langchain-ai/chat-langchain-rephrase")
+
+    history_aware_retriever = create_history_aware_retriever(
+        llm=chat,
         retriever=docsearch.as_retriever(),
+        prompt=rephrase_prompt,
+    )
+    
+    rag_chain = create_retrieval_chain(
+        retriever=history_aware_retriever,
         combine_docs_chain=stuff_documents_chain,
     )
     
-    rag_result = rag_chain.invoke(input={"input":query})
+    rag_result = rag_chain.invoke(input={"input":query, "chat_history": chat_history})
     return rag_result
 
 if __name__ == "__main__":
     result = run_llm(query = "what is core architecture of MCP? Explain in easy to understandable ways to a non tech audience")
-    print(result["answer"])
+    print(result)
