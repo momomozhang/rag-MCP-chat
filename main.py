@@ -1,7 +1,7 @@
 from typing import Set
-from dotenv import load_dotenv
 
 import streamlit as st
+from dotenv import load_dotenv
 from streamlit_chat import message
 
 from backend.rag_openai import run_llm
@@ -23,6 +23,15 @@ if "chat_answers_history" not in st.session_state:
 
 
 def create_sources_string(source_urls: Set[str]) -> str:
+    """Generates a formatted string listing source URLs.
+
+    Args:
+        source_urls (Set[str]): A set of source URL strings.
+
+    Returns:
+        str: A formatted string that lists the sources in sorted order, each prefixed with a number.
+             Returns an empty string if no sources are provided.
+    """
     if not source_urls:
         return ""
     sources_list = list(source_urls)
@@ -37,6 +46,7 @@ if prompt:
     with st.spinner("Generating response..."):
         generated_response = run_llm(query=prompt)
         sources = set([doc.metadata["source"] for doc in generated_response["context"]])
+
         formatted_response = (
             f"{generated_response["answer"]} \n\n {create_sources_string(sources)}"
         )
@@ -46,8 +56,8 @@ if prompt:
 
 if st.session_state["chat_answers_history"]:
     for generated_response, user_query in zip(
-        st.session_state["user_prompt_history"],
-        st.session_state["chat_answers_history"],
+        reversed(st.session_state["user_prompt_history"]),
+        reversed(st.session_state["chat_answers_history"]),
     ):
         st.chat_message("user").write(user_query)
         st.chat_message("assistant").write(generated_response)
