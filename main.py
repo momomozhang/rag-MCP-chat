@@ -28,11 +28,11 @@ def create_sources_string(source_urls: Set[str]) -> str:
     """Generates a formatted string listing source URLs.
 
     Args:
-        source_urls (Set[str]): A set of source URL strings.
+        source_urls: A set of source URL strings.
 
     Returns:
-        str: A formatted string that lists the sources in sorted order, each prefixed with a number.
-             Returns an empty string if no sources are provided.
+        A formatted string that lists the sources in sorted order, each prefixed with a number.
+        Returns an empty string if no sources are provided.
     """
     if not source_urls:
         return ""
@@ -52,12 +52,12 @@ if prompt:
         )
         sources = set([doc.metadata["source"] for doc in generated_response["context"]])
 
-        formatted_response = (
-            f"{generated_response["answer"]} \n\n {create_sources_string(sources)}"
+        FORMATTED_RESPONSE = (
+            f"{generated_response['answer']} \n\n {create_sources_string(sources)}"
         )
 
         st.session_state["user_prompt_history"].append(prompt)
-        st.session_state["chat_answers_history"].append(formatted_response)
+        st.session_state["chat_answers_history"].append(FORMATTED_RESPONSE)
         st.session_state["chat_history"].append(("human", prompt))
         st.session_state["chat_history"].append(("ai", generated_response["answer"]))
 

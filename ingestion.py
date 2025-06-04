@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import DirectoryLoader, BSHTMLLoader
+from langchain_community.document_loaders import BSHTMLLoader, DirectoryLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 
@@ -15,7 +15,7 @@ pinecone_api_key = os.environ.get("PINECONE_API_KEY")
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
 
-def convert_file_path_to_web_url(file_path):
+def convert_file_path_to_web_url(file_path: str):
     """Convert local file path to web URL"""
     # Remove the local directory prefix and .html extension
     relative_path = file_path.replace("mcp_docs/html/", "").replace(".html", "")

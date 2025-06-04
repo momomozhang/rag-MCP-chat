@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv
 from langchain import hub
@@ -9,7 +9,6 @@ from langchain.chains.retrieval import create_retrieval_chain
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 
-
 load_dotenv()
 
 openai_api_key = os.environ.get("OPENAI_API_KEY")
@@ -17,7 +16,10 @@ pinecone_index_name = os.environ.get("PINECONE_INDEX_NAME")
 pinecone_api_key = os.environ.get("PINECONE_API_KEY")
 
 
-def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
+def run_llm(query: str, chat_history: Optional[List[Dict[str, Any]]] = None):
+    if chat_history is None:
+        chat_history = []
+
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
     docsearch = PineconeVectorStore(
         index_name=pinecone_index_name,
@@ -50,7 +52,5 @@ def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
 
 
 if __name__ == "__main__":
-    result = run_llm(
-        query="what is core architecture of MCP? Explain in easy to understandable ways to a non tech audience"
-    )
+    result = run_llm(query="what is core architecture of MCP?")
     print(result)
